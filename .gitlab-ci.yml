@@ -1,0 +1,93 @@
+# stages:          # List of stages for jobs, and their order of execution
+#   - build
+#   - test
+#   - deploy
+
+# backend_job_build:       # This job runs in the build stage, which runs first.
+#   stage: build
+#   image: maven:latest
+#   script:
+#     - cd cine-back/
+#     - mvn clean package install
+#   artifacts:
+#     paths: 
+#     - cine-back/target/PI-BackEnd-0.0.1-SNAPSHOT.jar
+#   # rules: 
+#   #   - changes:
+#   #     - cine-back/**/*
+
+# frontend_job_build:
+#   stage: build
+#   image: node:16.16.0
+#   script:
+#     - cd cine-front/
+#     - npm install
+#     - npm run build
+#   artifacts:
+#     name: react_dhcinema_build
+#     paths: 
+#     - cine-front/build
+#   # rules: 
+#   #   - changes: 
+#   #     - cine-front/**/*
+
+# test_job_back:
+#   stage: test
+#   image: maven:latest
+#   script:
+#     - cd cine-back/
+#     - mvn test
+#   # rules: 
+#   #   - changes: 
+#   #     - cine-back/**/*
+
+# # test_job_front: 
+# #   stage: test
+# #   image: node:16.16.0
+# #   script:
+# #     - cd cine-front/
+# #     - npm install
+# #     - npm run test
+# #   rules: 
+# #     - changes: 
+#       # - cine-front/**/*
+
+# deploy_backend:
+#   stage: deploy
+#   needs: [backend_job_build]
+#   image: alpine:3.11
+#   before_script:
+#     - apk update && apk add openssh-client bash
+#     - mkdir -p ~/.ssh
+#     - chmod 700 ~/.ssh
+#     - eval $(ssh-agent -s)
+#     - echo "$SSH_ACCESS_KEY" | tr -d '\r' | ssh-add -
+#     - touch ~/.ssh/config
+#     - chmod 644 ~/.ssh/config
+#     - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+#     - ssh-keyscan -H "$DEPLOY_SERVER_IP" >> ~/.ssh/known_hosts
+#     - chmod 644 ~/.ssh/known_hosts
+#   script:
+#     - echo "Deploying started..."
+#     - ssh ec2-user@$DEPLOY_SERVER_IP "sudo systemctl stop dhcinema.service"
+#     - scp cine-back/target/PI-BackEnd-0.0.1-SNAPSHOT.jar ec2-user@$DEPLOY_SERVER_IP:~/
+#     - ssh ec2-user@$DEPLOY_SERVER_IP "sudo systemctl start dhcinema.service"
+#     - echo "Finished deploying the app."
+#   # rules:
+#   #   - changes:
+#   #       - BackEnd/**/*
+# deploy_Frontend:
+#   stage: deploy
+#   needs: [frontend_job_build]
+#   image: python:latest
+#   script:
+#     - cd cine-front/
+#     - pip install awscli
+#     - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+#     - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+#     - ls build/
+#     - aws s3 sync build/ s3://g9-pelis
+
+#   # rules:
+#   #   - changes:
+  #       - FrontEnd/**/*

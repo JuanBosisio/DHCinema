@@ -1,0 +1,23 @@
+[
+    {
+        "id":"1",
+        "cine":"Cinema DH 1",
+        "rating":"4.5",
+        "position":{"lat":-34.6037, "lng":-58.3816},
+        "city":"La Plata"
+    },
+    {
+        "id":"2",
+        "cine":"Cinema DH 2",
+        "rating":"4.5",
+        "position":{"lat":-31.4167, "lng":-64.1833},
+        "city":"Cordoba"
+    },
+    {
+        "id":"3",
+        "cine":"Cinema DH 3",
+        "rating":"4.5",
+        "position":{"lat":-24.7829, "lng":-65.4124},
+        "city":"Santa Fe"
+    }
+]
