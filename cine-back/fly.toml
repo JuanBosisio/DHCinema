@@ -1,0 +1,26 @@
+# fly.toml app configuration file generated for dhcinema on 2023-07-13T11:20:41-03:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = "dhcinema"
+primary_region = "scl"
+
+[http_service]
+  internal_port = 3306
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ["app"]
+
+[env]
+DB_HOST = 'bvkxsuf20uumqizolpze-mysql.services.clever-cloud.com'
+DB_PORT = '3306'
+DB_NAME = 'bvkxsuf20uumqizolpze'
+DB_USERNAME = 'uweqdjcqx5cjape2'
+DB_PASSWORD = 'uBkJh0LNFxy4xyvDEl0M'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = '587'
+EMAIL_URL = 'dhcinemaauth@gmail.com'
+EMAIL_PASSWORD = 'dzfeegwplkshtkld'
